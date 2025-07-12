@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Secure Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .space-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a0033 0%, #000 100%);
+        }
+
+        .stars1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+                radial-gradient(1px 1px at 40px 70px, #ff6b6b, transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, #4ecdc4, transparent),
+                radial-gradient(1px 1px at 160px 30px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 150px;
+            animation: sparkle 3s linear infinite;
+        }
+
+        .stars2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 25px 45px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 65px 25px, rgba(255,107,107,0.6), transparent),
+                radial-gradient(1px 1px at 110px 85px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 175px 60px, rgba(78,205,196,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 250px 180px;
+            animation: sparkle 4s linear infinite;
+        }
+
+        .stars3 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 35px 55px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1px 1px at 85px 105px, rgba(255,107,107,0.6), transparent),
+                radial-gradient(1px 1px at 145px 25px, rgba(78,205,196,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 300px 200px;
+            animation: sparkle 5s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .admin-badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .login-container {
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px); 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            padding: 40px 35px;
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(255, 107, 107, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .login-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 40px rgba(255, 107, 107, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .welcome-title {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .shield-icon {
+            color: #ff6b6b;
+            font-size: 18px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #ff6b6b; }
+            to { text-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff6b6b; }
+        }
+
+        .login-form {
+            margin-top: 25px;
+        }
+
+        .input-field {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-field i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            z-index: 2;
+        }
+
+        .password-toggle {
+            left: auto !important;
+            right: 15px !important;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: #ff6b6b;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 15px 45px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-field input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-field input:focus {
+            border-color: #ff6b6b;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        .security-section {
+            margin-bottom: 25px;
+        }
+
+        .security-title {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verification-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .verification-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .verification-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .verification-item input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #ff6b6b;
+        }
+
+        .verification-item label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .two-factor-section {
+            margin-bottom: 20px;
+        }
+
+        .two-factor-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .two-factor-input input {
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .two-factor-input input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+            outline: none;
+        }
+
+        .options-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #ff6b6b;
+        }
+
+        .forgot-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-link:hover {
+            color: #26a69a;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn i {
+            transition: transform 0.2s ease;
+        }
+
+        .login-btn:hover i {
+            transform: translateX(2px);
+        }
+
+        .signup-text {
+            text-align: center;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .signup-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .signup-link:hover {
+            color: #26a69a;
+        }
+
+        .security-notice {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .security-notice i {
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+
+        .security-notice p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+
+            .login-container {
+                padding: 30px 25px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .verification-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .two-factor-input input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="space-bg">
+        <div class="stars1"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <div class="container">
+        <div class="login-container">
+            <div class="admin-badge">
+                <i class="fas fa-crown"></i> ADMIN
+            </div>
+            
+            <div class="header-section">
+                <h1 class="welcome-title">Admin Portal</h1>
+                <p class="subtitle">
+                    <i class="fas fa-shield-alt shield-icon"></i>
+                    Secure Administrative Access
+                </p>
+            </div>
+
+            <form class="login-form" action="/admin/login" method="POST">
+                <div class="input-field">
+                    <i class="fas fa-user-shield"></i>
+                    <input type="email" name="admin_email" required placeholder="Administrator Email">
+                </div>
+                
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="admin_password" id="password" required placeholder="Admin Password">
+                    <i class="fas fa-eye-slash password-toggle" onclick="togglePassword()"></i>
+                </div>
+
+                <div class="security-section">
+                    <div class="security-title">
+                        <i class="fas fa-key"></i>
+                        Admin Verification Method
+                    </div>
+                    
+                    <div class="verification-grid">
+                        <div class="verification-item">
+                            <input type="radio" name="auth_method" value="2fa" id="2fa" required>
+                            <label for="2fa">2FA Code</label>
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        
+                        <div class="verification-item">
+                            <input type="radio" name="auth_method" value="security_key" id="security_key" required>
+                            <label for="security_key">Security Key</label>
+                            <i class="fas fa-key"></i>
+                        </div>
+                        
+                        <div class="verification-item">
+                            <input type="radio" name="auth_method" value="admin_code" id="admin_code" required>
+                            <label for="admin_code">Admin Code</label>
+                            <i class="fas fa-code"></i>
+                        </div>
+                        
+                        <div class="verification-item">
+                            <input type="radio" name="auth_method" value="biometric" id="biometric" required>
+                            <label for="biometric">Biometric</label>
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="two-factor-section" id="verification-input" style="display: none;">
+                    <div class="security-title">
+                        <i class="fas fa-shield-check"></i>
+                        Enter Verification Code
+                    </div>
+                    <div class="two-factor-input">
+                        <input type="text" maxlength="1" name="code1" required>
+                        <input type="text" maxlength="1" name="code2" required>
+                        <input type="text" maxlength="1" name="code3" required>
+                        <input type="text" maxlength="1" name="code4" required>
+                        <input type="text" maxlength="1" name="code5" required>
+                        <input type="text" maxlength="1" name="code6" required>
+                    </div>
+                </div>
+
+                <div class="options-group">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember_admin">
+                        Remember device
+                    </label>
+                    <a href="#" class="forgot-link">Admin Recovery</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Secure Login
+                </button>
+
+                
+
+                <p class="signup-text">
+                    Need admin access?
+                    <a href="#" class="signup-link" onclick="showRegister()">Request Registration</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // Show verification input based on selected method
+        document.querySelectorAll('input[name="auth_method"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const verificationInput = document.getElementById('verification-input');
+                if (this.value === '2fa' || this.value === 'admin_code') {
+                    verificationInput.style.display = 'block';
+                } else {
+                    verificationInput.style.display = 'none';
+                }
+            });
+        });
+
+        // Auto-focus next input in 2FA code
+        document.querySelectorAll('.two-factor-input input').forEach((input, index, inputs) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Form submission animation
+        document.querySelector('.login-form').addEventListener('submit', function(e) {
+            const button = document.querySelector('.login-btn');
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 150);
+        });
+
+        // Enhanced input focus animations
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Parallax effect for stars
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX / window.innerWidth;
+            mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelector('.stars1').style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px)`;
+            document.querySelector('.stars2').style.transform = `translate(${mouseX * 5}px, ${mouseY * 5}px)`;
+            document.querySelector('.stars3').style.transform = `translate(${mouseX * 2}px, ${mouseY * 2}px)`;
+        });
+
+        function showRegister() {
+            alert('Admin registration requires approval from existing administrators. Please contact your system administrator.');
+        }
+    </script>
+</body>
+</html>
