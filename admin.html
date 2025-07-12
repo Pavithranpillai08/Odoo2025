@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Skill Swap Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #000;
+            position: relative;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Space Background */
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #111 0%, #000 100%);
+            z-index: -1;
+        }
+
+        /* Stars Layer 1 */
+        .stars1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+                radial-gradient(1px 1px at 40px 70px, #fff, transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+                radial-gradient(1px 1px at 160px 30px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 150px;
+            animation: sparkle 3s linear infinite;
+        }
+
+        /* Stars Layer 2 */
+        .stars2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 25px 45px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 65px 25px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 110px 85px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 175px 60px, rgba(255,255,255,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 250px 180px;
+            animation: sparkle 4s linear infinite;
+        }
+
+        /* Stars Layer 3 */
+        .stars3 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 35px 55px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1px 1px at 85px 105px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 145px 25px, rgba(255,255,255,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 300px 200px;
+            animation: sparkle 5s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.6; transform: scale(1); }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .admin-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Admin Cards */
+        .admin-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .moderation-icon { background: linear-gradient(45deg, #ff6b6b, #ee5a24); }
+        .user-icon { background: linear-gradient(45deg, #ffa726, #ff7043); }
+        .swap-icon { background: linear-gradient(45deg, #42a5f5, #1e88e5); }
+        .message-icon { background: linear-gradient(45deg, #ab47bc, #8e24aa); }
+        .report-icon { background: linear-gradient(45deg, #26c6da, #00acc1); }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .card-content {
+            margin-bottom: 20px;
+        }
+
+        .pending-count {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #26c6da, #00acc1);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #ffa726, #ff7043);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Tables */
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #ffa726; color: white; }
+        .status-accepted { background: #26c6da; color: white; }
+        .status-cancelled { background: #ff6b6b; color: white; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-bg">
+        <div class="stars1"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <div class="admin-badge">Admin Panel</div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Content Moderation Card -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon moderation-icon">🛡️</div>
+                    <h3 class="card-title">Content Moderation</h3>
+                </div>
+                <div class="card-content">
+                    <div class="pending-count">12 Pending Reviews</div>
+                    <p style="margin-bottom: 15px; color: rgba(255,255,255,0.8);">
+                        Review and moderate skill descriptions for inappropriate or spammy content.
+                    </p>
+                </div>
+                <button class="btn btn-primary" onclick="openModerationPanel()">Review Content</button>
+                <button class="btn btn-danger" onclick="viewReportedContent()">View Reports</button>
+            </div>
+
+            <!-- User Management Card -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon user-icon">👥</div>
+                    <h3 class="card-title">User Management</h3>
+                </div>
+                <div class="card-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">1,247</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Banned Users</div>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        Manage user accounts and enforce platform policies.
+                    </p>
+                </div>
+                <button class="btn btn-primary" onclick="viewUsers()">View Users</button>
+                <button class="btn btn-danger" onclick="manageBans()">Manage Bans</button>
+            </div>
+
+            <!-- Swap Monitoring Card -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon swap-icon">🔄</div>
+                    <h3 class="card-title">Swap Monitoring</h3>
+                </div>
+                <div class="card-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">45</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">128</div>
+                            <div class="stat-label">Accepted</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">23</div>
+                            <div class="stat-label">Cancelled</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="viewSwaps()">View All Swaps</button>
+                <button class="btn btn-warning" onclick="viewPendingSwaps()">Pending Swaps</button>
+            </div>
+
+            <!-- Platform Messages Card -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon message-icon">📢</div>
+                    <h3 class="card-title">Platform Messages</h3>
+                </div>
+                <div class="card-content">
+                    <div class="form-group">
+                        <label class="form-label">Message Type</label>
+                        <select class="form-input">
+                            <option>Feature Update</option>
+                            <option>Maintenance Alert</option>
+                            <option>Policy Change</option>
+                            <option>General Announcement</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message Content</label>
+                        <textarea class="form-input form-textarea" placeholder="Enter your message to all users..."></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="sendMessage()">Send Message</button>
+                <button class="btn btn-primary" onclick="viewMessageHistory()">Message History</button>
+            </div>
+
+            <!-- Reports & Analytics Card -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon report-icon">📊</div>
+                    <h3 class="card-title">Reports & Analytics</h3>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 15px; color: rgba(255,255,255,0.8);">
+                        Download comprehensive reports and analytics data.
+                    </p>
+                    <div class="form-group">
+                        <label class="form-label">Report Type</label>
+                        <select class="form-input">
+                            <option>User Activity Report</option>
+                            <option>Feedback Logs</option>
+                            <option>Swap Statistics</option>
+                            <option>Platform Usage</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="downloadReport()">Download Report</button>
+                <button class="btn btn-primary" onclick="viewAnalytics()">View Analytics</button>
+            </div>
+
+            <!-- Recent Activity Card -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon swap-icon">📋</div>
+                    <h3 class="card-title">Recent Activity</h3>
+                </div>
+                <div class="card-content">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>Skill Swap Request</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>2 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>Profile Update</td>
+                                    <td><span class="status-badge status-accepted">Completed</span></td>
+                                    <td>5 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Mike Johnson</td>
+                                    <td>Swap Cancelled</td>
+                                    <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                                    <td>12 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Sarah Wilson</td>
+                                    <td>New Registration</td>
+                                    <td><span class="status-badge status-accepted">Active</span></td>
+                                    <td>15 min ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Content Moderation Functions
+        function openModerationPanel() {
+            alert('Opening content moderation panel...\n\nHere you can:\n• Review flagged skill descriptions\n• Approve or reject content\n• Set content guidelines');
+        }
+
+        function viewReportedContent() {
+            alert('Viewing reported content...\n\nShowing:\n• User reports\n• Flagged profiles\n• Inappropriate content');
+        }
+
+        // User Management Functions
+        function viewUsers() {
+            alert('Opening user management panel...\n\nFeatures:\n• View all users\n• Search users\n• User activity logs\n• Account status');
+        }
+
+        function manageBans() {
+            alert('Opening ban management...\n\nOptions:\n• View banned users\n• Temporary/permanent bans\n• Ban reasons\n• Appeal reviews');
+        }
+
+        // Swap Monitoring Functions
+        function viewSwaps() {
+            alert('Opening swap monitoring dashboard...\n\nShowing:\n• All swap requests\n• Swap history\n• Success rates\n• User feedback');
+        }
+
+        function viewPendingSwaps() {
+            alert('Viewing pending swaps...\n\nPending swaps requiring attention:\n• Stalled negotiations\n• Dispute resolution\n• Timeout warnings');
+        }
+
+        // Platform Messages Functions
+        function sendMessage() {
+            const messageType = document.querySelector('select').value;
+            const messageContent = document.querySelector('textarea').value;
+            
+            if (!messageContent.trim()) {
+                alert('Please enter a message content');
+                return;
+            }
+            
+            alert(`Sending platform-wide message...\n\nType: ${messageType}\nMessage: ${messageContent.substring(0, 100)}${messageContent.length > 100 ? '...' : ''}\n\nThis will be sent to all active users.`);
+        }
+
+        function viewMessageHistory() {
+            alert('Opening message history...\n\nShowing:\n• Previous announcements\n• Message delivery stats\n• User engagement metrics');
+        }
+
+        // Reports & Analytics Functions
+        function downloadReport() {
+            const reportType = document.querySelectorAll('select')[1].value;
+            alert(`Preparing ${reportType} for download...\n\nReport will include:\n• Data from last 30 days\n• CSV/Excel format\n• Detailed analytics\n\nDownload will start shortly.`);
+        }
+
+        function viewAnalytics() {
+            alert('Opening analytics dashboard...\n\nShowing:\n• User engagement metrics\n• Platform usage statistics\n• Growth trends\n• Performance indicators');
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Admin Dashboard loaded');
+            
+            // Simulate real-time updates
+            setInterval(function() {
+                // In a real app, this would update stats from the server
+                console.log('Updating dashboard stats...');
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
