@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1, h2, h3 {
+      color: linear-gradient(45deg, #667eea, #764ba2);;
+    }
+
+    .skills-list, .swap-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .skills-list li, .swap-list li {
+      background: #1e1e1e;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 250px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 4px;
+      background-color:  linear-gradient(45deg, #667eea, #764ba2);;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: linear-gradient(45deg, #667eea, #764ba2);;
+    }
+
+    a {
+      color: #00ffcc;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .logout {
+      background: #ff5555;
+      color: white;
+      float: right;
+    }
+
+    .accept-form {
+      display: inline;
+    }
+
+    .swap-section {
+      margin-top: 3rem;
+      background-color: #1a1a1a;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+    }
+
+    .meet-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .meet-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, {{ user.uname }}</h1>
+
+    <!-- Skills Section -->
+    <h3>Your Skills:</h3>
+    <ul class="skills-list">
+      {% for skill in user.user_skills %}
+        <li>
+          {{ skill.skill }}
+          <form method="POST" action="/delete-skill/{{ skill.id }}" style="margin: 0;">
+            <button type="submit">❌</button>
+          </form>
+        </li>
+      {% else %}
+        <li>No skills added yet.</li>
+      {% endfor %}
+    </ul>
+
+    <form method="POST" action="/add-skill">
+      <input type="text" name="skill" placeholder="Add a new skill" required />
+      <button type="submit">Add Skill</button>
+    </form>
+
+    <br><br>
+    <a href="{{ url_for('landing') }}">Done</a>
+    <a href="/logout" class="logout">Logout</a>
+
+    <!-- Swap Requests Section -->
+    <div class="swap-section">
+      <h2>🔁 Swap Requests</h2>
+
+      <!-- Sent Requests -->
+      <h3>📤 Pending Requests Sent</h3>
+      {% if pending_sent %}
+        <ul class="swap-list">
+          {% for req in pending_sent %}
+            <li>
+              To: {{ req.receiver.uname }} ({{ req.receiver.email }})
+              <span>Status: ⏳ Pending</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No pending sent requests.</p>
+      {% endif %}
+
+      <!-- Received Requests -->
+      <h3>📥 Pending Requests Received</h3>
+      {% if pending_received %}
+        <ul class="swap-list">
+          {% for req in pending_received %}
+            <li>
+              From: {{ req.sender.uname }} ({{ req.sender.email }})
+              <form method="POST" action="{{ url_for('accept_swap', request_id=req.id) }}" class="accept-form">
+                <button type="submit">✅ Accept</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No pending received requests.</p>
+      {% endif %}
+
+      <!-- Accepted Requests -->
+      <h3>✅ Accepted Requests</h3>
+      {% if accepted_requests %}
+        <ul class="swap-list">
+          {% for req in accepted_requests %}
+  <li>
+    Connected with: {{ req.sender.uname if req.receiver_id == current_user.id else req.receiver.uname }}
+    <a href="{{ url_for('meet', user_id=(req.sender.id if req.receiver_id == current_user.id else req.receiver.id)) }}">
+      <button class="meet-btn" type="button">🎥 Start Meet</button>
+    </a>
+  </li>
+{% endfor %}
+
+        </ul>
+      {% else %}
+        <p>No accepted requests yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

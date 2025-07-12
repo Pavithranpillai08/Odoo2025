@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Swap</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: #000;
+      overflow: hidden;
+      position: relative;
+      font-family: Arial, sans-serif;
+    }
+
+    .space-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #111 0%, #000 100%);
+    }
+
+    .stars1, .stars2, .stars3 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-repeat: repeat;
+    }
+
+    .stars1 {
+      background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+        radial-gradient(1px 1px at 40px 70px, #fff, transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+        radial-gradient(1px 1px at 160px 30px, #fff, transparent);
+      background-size: 200px 150px;
+      animation: sparkle 3s linear infinite;
+    }
+
+    .stars2 {
+      background-image: radial-gradient(1px 1px at 25px 45px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 65px 25px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 110px 85px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 175px 60px, rgba(255,255,255,0.5), transparent);
+      background-size: 250px 180px;
+      animation: sparkle 4s linear infinite;
+    }
+
+    .stars3 {
+      background-image: radial-gradient(1px 1px at 35px 55px, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 85px 105px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 145px 25px, rgba(255,255,255,0.5), transparent);
+      background-size: 300px 200px;
+      animation: sparkle 5s linear infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .top-nav {
+      position: absolute;
+      top: 50px;
+      right: 30px;
+      z-index: 20;
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-btn {
+      padding: 10px 22px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
+      font-weight: 500;
+      margin-top: 5rem;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .search-section {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 15;
+      text-align: center;
+    }
+
+    .search-section h1 {
+      font-size: 46px;
+      margin-bottom: 25px;
+      color: white;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 420px;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      backdrop-filter: blur(10px);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .search-input:focus {
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .search-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .search-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .floating-skills {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .skill {
+      position: absolute;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      font-weight: 300;
+      backdrop-filter: blur(5px);
+      animation: float 15s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+      50% { transform: translateY(-20px) rotate(1deg); opacity: 1; }
+      100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+    }
+
+    .skill:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .skill:nth-child(2) { top: 20%; right: 15%; animation-delay: -2s; }
+    .skill:nth-child(3) { top: 40%; left: 5%; animation-delay: -4s; }
+    .skill:nth-child(4) { top: 60%; right: 10%; animation-delay: -6s; }
+    .skill:nth-child(5) { top: 80%; left: 20%; animation-delay: -8s; }
+    .skill:nth-child(6) { top: 30%; right: 30%; animation-delay: -10s; }
+    .skill:nth-child(7) { top: 70%; left: 40%; animation-delay: -12s; }
+    .skill:nth-child(8) { top: 15%; left: 60%; animation-delay: -14s; }
+
+    @media (max-width: 768px) {
+      .search-input {
+        width: 280px;
+        font-size: 15px;
+      }
+      .search-section h1 {
+        font-size: 32px;
+      }
+      .nav-btn {
+        padding: 8px 14px;
+        font-size: 14px;
+      }
+      .top-nav {
+        top: 10px;
+        right: 10px;
+        gap: 10px;
+      }
+    }
+    .card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 400px;
+  gap: 20px;
+  z-index: 15;
+  position: fi;
+}
+
+.user-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  width: 260px;
+  text-align: left;
+  box-shadow: 0 0 8px rgba(255,255,255,0.1);
+}
+
+.user-card h3 {
+  margin-bottom: 10px;
+}
+
+.user-card ul {
+  padding-left: 20px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="space-bg">
+    <div class="stars1"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+  </div>
+  
+    {% if id %}
+        <a href="{{ url_for('profile') }}" class="nav-btn">Profile</a>
+        <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
+    {% else %}
+        <div class="top-nav">
+            <a href="{{ url_for('login') }}" class="nav-btn">Login</a>
+            <a href="{{ url_for('register') }}" class="nav-btn">Sign Up</a>
+        </div>
+    {% endif %}
+
+  <!-- landing.html -->
+<div class="search-section">
+    <h1>Welcome to Skill Swap!</h1>
+    <form method="POST" action="/">
+        <div class="search-container">
+            <input type="text" name="keyword" class="search-input" placeholder="Search skills..." value="{{ searched or '' }}">
+            <button type="submit" class="search-btn">Search</button>
+        </div>
+    </form>
+</div>
+
+  <div class="floating-skills">
+    <div class="skill">JavaScript</div>
+    <div class="skill">React</div>
+    <div class="skill">Guitar</div>
+    <div class="skill">Singing</div>
+  </div>
+
+{% if results is not none and results|length > 0 %}
+  <div class="card-grid">
+    {% for user in results %}
+      <div class="user-card">
+        <h3>{{ user.uname }}</h3>
+        <form method="GET" action="{{ url_for('view_user_profile', user_id=user.id) }}">
+    <button type="submit">View Profile</button>
+</form>
+
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="margin-top: 2rem;"><strong>No users found for skill:</strong> "{{ searched }}"</p>
+{% endif %}
+</body>
+</html>

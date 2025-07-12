@@ -1,0 +1,119 @@
+<!-- categories.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/categories.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-logo">
+        <img src="./static/logo.jpg" alt="FixitBuddy Logo" class="logo">
+    </div>
+    <div class="nav-links">
+        <a href="{{ url_for('services') }}" class="active">Home</a>
+        <a href="#">Services</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Conditional Rendering for Login/Register -->
+    {% if id %}
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+    {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+    {% endif %}
+
+    <div class="menu-icon">
+        <i class="fas fa-bars"></i>
+    </div>
+</nav>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1>Skills</h1>
+        <p class="subtitle">Select a category to find solutions or expert help</p>
+
+        <div class="categories-grid">
+            <!-- Bathroom Category -->
+            <a href="bathroom.html" class="category-card">
+                <div class="card-content">
+                    <i class="fas fa-bath"></i>
+                    <h3>Bathroom</h3>
+                    <p>Plumbing, fixtures, leaks, and more</p>
+                    <span class="arrow-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Kitchen Category -->
+            <a href="kitchen.html" class="category-card">
+                <div class="card-content">
+                    <i class="fas fa-sink"></i>
+                    <h3>Kitchen</h3>
+                    <p>Appliances, plumbing, and fixtures</p>
+                    <span class="arrow-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Furniture Category -->
+            <a href="furniture.html" class="category-card">
+                <div class="card-content">
+                    <i class="fas fa-couch"></i>
+                    <h3>Furniture</h3>
+                    <p>Assembly, repairs, and restoration</p>
+                    <span class="arrow-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Car Maintenance -->
+            <a href="car.html" class="category-card">
+                <div class="card-content">
+                    <i class="fas fa-car"></i>
+                    <h3>Car</h3>
+                    <p>Basic maintenance and repairs</p>
+                    <span class="arrow-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Tech Support -->
+            <a href="tech.html" class="category-card">
+                <div class="card-content">
+                    <i class="fas fa-laptop"></i>
+                    <h3>Tech</h3>
+                    <p>Electronics and gadget repairs</p>
+                    <span class="arrow-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Appliances -->
+            <a href="appliances.html" class="category-card">
+                <div class="card-content">
+                    <i class="fas fa-tv"></i>
+                    <h3>Appliances</h3>
+                    <p>Home appliance troubleshooting</p>
+                    <span class="arrow-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

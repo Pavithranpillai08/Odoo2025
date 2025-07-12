@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.uname }}'s Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 40px;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 28px;
+            color: linear-gradient(45deg, #667eea, #764ba2);;
+        }
+
+        p {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .skills {
+            margin-top: 20px;
+        }
+
+        .skill-badge {
+            display: inline-block;
+            background-color: #333;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            margin: 5px 5px 0 0;
+            font-size: 14px;
+        }
+
+        .video-call-btn {
+            margin-top: 30px;
+            padding: 12px 24px;
+            background-color: linear-gradient(45deg, #667eea, #764ba2);;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .video-call-btn:hover {
+            background-color: linear-gradient(45deg, #667eea, #764ba2);;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        a.back-link:hover {
+            background-color: (45deg, #667eea, #764ba2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ user.uname }}</h1>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+
+        <div class="skills">
+            <h3>Skills:</h3>
+            {% if skills %}
+                {% for skill in skills %}
+                    <span class="skill-badge">{{ skill.skill }}</span>
+                {% endfor %}
+            {% else %}
+                <p><em>No skills listed.</em></p>
+            {% endif %}
+        </div>
+
+        {% if id != user.id %}
+    {% if not already_sent %}
+        <form method="POST" action="{{ url_for('send_swap_request', user_id=user.id) }}">
+          <button type="submit" class="video-call-btn">Swap Req</button>
+        </form>
+    {% else %}
+        <button class="video-call-btn" disabled>Request Sent</button>
+    {% endif %}
+{% endif %}
+        <br><a href="{{ url_for('landing') }}" class="back-link">&larr; Back to Home</a>
+    </div>
+
+    <script>
+        function startVideoCall() {
+            // You can replace this with actual logic for Jitsi/Zoom/Meet/WebRTC
+            alert("Video call feature coming soon!");
+        }
+    </script>
+</body>
+</html>

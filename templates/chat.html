@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini Chat</title>
+</head>
+<body>
+    <h2>Gemini Chat</h2>
+
+    <form method="POST" action="/ai">
+        <input type="text" name="message" placeholder="Type your message" required>
+        <button type="submit">Send</button>
+    </form>
+
+    {% if reply %}
+        <p><strong>Gemini:</strong> {{ reply }}</p>
+    {% endif %}
+</body>
+</html>

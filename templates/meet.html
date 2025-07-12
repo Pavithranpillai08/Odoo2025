@@ -1,0 +1,34 @@
+<!-- templates/meet.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SkillSwap Meet</title>
+  <style>
+    #jitsi-meet {
+      height: 90vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to SkillSwap Meeting</h1>
+  <div id="jitsi-meet"></div>
+
+  <script src='https://meet.jit.si/external_api.js'></script>
+  <script>
+    const domain = "meet.jit.si";
+    const roomName = "{{ room }}";
+
+    const options = {
+      roomName,
+      width: "100%",
+      height: 600,
+      parentNode: document.querySelector('#jitsi-meet'),
+    };
+
+    const api = new JitsiMeetExternalAPI(domain, options);
+  </script>
+
+</body>
+</html>
