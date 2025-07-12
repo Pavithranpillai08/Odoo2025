@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Registration Request</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #000;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a0033 0%, #000 100%);
+        }
+
+        .stars1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+                radial-gradient(1px 1px at 40px 70px, #ff6b6b, transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, #4ecdc4, transparent),
+                radial-gradient(1px 1px at 160px 30px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 150px;
+            animation: sparkle 3s linear infinite;
+        }
+
+        .stars2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 25px 45px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 65px 25px, rgba(255,107,107,0.6), transparent),
+                radial-gradient(1px 1px at 110px 85px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 175px 60px, rgba(78,205,196,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 250px 180px;
+            animation: sparkle 4s linear infinite;
+        }
+
+        .stars3 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 35px 55px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1px 1px at 85px 105px, rgba(255,107,107,0.6), transparent),
+                radial-gradient(1px 1px at 145px 25px, rgba(78,205,196,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 300px 200px;
+            animation: sparkle 5s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .admin-badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .registration-container {
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px); 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            padding: 40px 35px;
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(255, 107, 107, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .registration-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 40px rgba(255, 107, 107, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .shield-icon {
+            color: #ff6b6b;
+            font-size: 18px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #ff6b6b; }
+            to { text-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff6b6b; }
+        }
+
+        .registration-form {
+            margin-top: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-field {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-field i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            z-index: 2;
+        }
+
+        .input-field input, .input-field select, .input-field textarea {
+            width: 100%;
+            padding: 15px 45px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+            resize: vertical;
+        }
+
+        .input-field textarea {
+            min-height: 100px;
+            padding-top: 15px;
+        }
+
+        .input-field input::placeholder, .input-field textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-field input:focus, .input-field select:focus, .input-field textarea:focus {
+            border-color: #ff6b6b;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        .input-field select {
+            cursor: pointer;
+        }
+
+        .input-field select option {
+            background: #1a0033;
+            color: #ffffff;
+        }
+
+        .clearance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .clearance-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .clearance-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .clearance-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #ff6b6b;
+        }
+
+        .clearance-item label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px dashed rgba(255, 107, 107, 0.3);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-btn:hover {
+            background: rgba(255, 107, 107, 0.15);
+            border-color: rgba(255, 107, 107, 0.5);
+        }
+
+        .terms-section {
+            margin-bottom: 25px;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ff6b6b;
+            margin-top: 2px;
+        }
+
+        .terms-checkbox label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+
+        .terms-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .terms-link:hover {
+            color: #26a69a;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .register-btn i {
+            transition: transform 0.2s ease;
+        }
+
+        .register-btn:hover i {
+            transform: translateX(2px);
+        }
+
+        .login-text {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .login-link {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .login-link:hover {
+            color: #ee5a24;
+        }
+
+        .security-notice {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .security-notice i {
+            color: #4ecdc4;
+            margin-bottom: 5px;
+        }
+
+        .security-notice p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #26a69a);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+
+            .registration-container {
+                padding: 30px 25px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .clearance-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 14px;
+            }
+        }
+
+        .registration-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .registration-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .registration-container::-webkit-scrollbar-thumb {
+            background: rgba(78, 205, 196, 0.5);
+            border-radius: 4px;
+        }
+
+        .registration-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(78, 205, 196, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="space-bg">
+        <div class="stars1"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <div class="container">
+        <div class="registration-container">
+            <div class="admin-badge">
+                <i class="fas fa-user-plus"></i> REGISTER
+            </div>
+            
+            <div class="header-section">
+                <h1 class="welcome-title">Admin Registration</h1>
+                <p class="subtitle">
+                    <i class="fas fa-shield-alt shield-icon"></i>
+                    Request Administrative Access
+                </p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form class="registration-form" action="/admin/register" method="POST" enctype="multipart/form-data">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="full_name" required placeholder="Full Name">
+                    </div>
+                    
+                    
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" required placeholder="Professional Email Address">
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" name="phone" required placeholder="Phone Number">
+                    </div>
+                    
+                    
+                </div>
+
+                
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-key"></i>
+                        Access Requirements
+                    </div>
+                    
+                    <div class="clearance-grid">
+                        <div class="clearance-item">
+                            <input type="checkbox" name="permissions[]" value="user_management" id="user_mgmt">
+                            <label for="user_mgmt">User Management</label>
+                            <i class="fas fa-users"></i>
+                        </div>
+                        
+                        <div class="clearance-item">
+                            <input type="checkbox" name="permissions[]" value="system_config" id="sys_config">
+                            <label for="sys_config">System Configuration</label>
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        
+                        <div class="clearance-item">
+                            <input type="checkbox" name="permissions[]" value="data_access" id="data_access">
+                            <label for="data_access">Data Access</label>
+                            <i class="fas fa-database"></i>
+                        </div>
+                        
+                        <div class="clearance-item">
+                            <input type="checkbox" name="permissions[]" value="security_logs" id="security_logs">
+                            <label for="security_logs">Security Logs</label>
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        
+                        <div class="clearance-item">
+                            <input type="checkbox" name="permissions[]" value="backup_restore" id="backup_restore">
+                            <label for="backup_restore">Backup & Restore</label>
+                            <i class="fas fa-download"></i>
+                        </div>
+                        
+                        <div class="clearance-item">
+                            <input type="checkbox" name="permissions[]" value="financial_data" id="financial_data">
+                            <label for="financial_data">Financial Data</label>
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        Justification & Documentation
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-comment-alt"></i>
+                        <textarea name="justification" required placeholder="Please provide a detailed justification for admin access, including business requirements and use cases..."></textarea>
+                    </div>
+                    
+                    <div class="input-field">
+                        <div class="file-upload">
+                            <input type="file" name="authorization_letter" accept=".pdf,.doc,.docx" required>
+                            <div class="file-upload-btn">
+                                <i class="fas fa-upload"></i>
+                                Upload Authorization Letter (PDF/DOC)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-lock"></i>
+                        Security Setup
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" required placeholder="Create Admin Password" minlength="8">
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="confirm_password" required placeholder="Confirm Password" minlength="8">
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-mobile-alt"></i>
+                        <input type="tel" name="two_factor_phone" required placeholder="2FA Phone Number">
+                    </div>
+                </div>
+
+                <div class="terms-section">
+                    <div class="terms-checkbox">
+                        <input type="checkbox" name="terms_accepted" id="terms" required>
+                        <label for="terms">
+                            I acknowledge that I have read and agree to the 
+                            <a href="#" class="terms-link">Admin Terms of Service</a>, 
+                            <a href="#" class="terms-link">Security Policy</a>, and 
+                            <a href="#" class="terms-link">Data Privacy Agreement</a>.
+                        </label>
+                    </div>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" name="background_check" id="background_check" required>
+                        <label for="background_check">
+                            I consent to background verification and security clearance checks as required for administrative access.
+                        </label>
+                    </div>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" name="monitoring_consent" id="monitoring_consent" required>
+                        <label for="monitoring_consent">
+                            I understand that all administrative activities will be logged and monitored for security compliance.
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn" id="registerBtn">
+                    <i class="fas fa-user-plus"></i>
+                    Submit Registration Request
+                </button>
+
+                <div class="security-notice">
+                    <i class="fas fa-info-circle"></i>
+                    <p>
+                        Your registration request will be reviewed by the security team. 
+                        You will receive an email notification within 24-48 hours regarding the approval status.
+                        Admin access requires approval from at least two existing administrators.
+                    </p>
+                </div>
+
+                <p class="login-text">
+                    Already have admin access?
+                    <a href="/admin/login" class="login-link">Login Here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form progress tracking
+        function updateProgress() {
+            const form = document.querySelector('.registration-form');
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            const checkboxGroups = form.querySelectorAll('input[type="checkbox"][required]');
+            
+            let completed = 0;
+            let total = inputs.length;
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    // Handle required checkboxes
+                    if (input.checked) completed++;
+                } else if (input.value.trim() !== '') {
+                    completed++;
+                }
+            });
+            
+            const progressPercentage = (completed / total) * 100;
+            document.getElementById('progressFill').style.width = progressPercentage + '%';
+            
+            // Enable/disable submit button
+            const submitBtn = document.getElementById('registerBtn');
+            if (progressPercentage >= 90) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        // Add event listeners to all form inputs
+        document.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('input', updateProgress);
+            input.addEventListener('change', updateProgress);
+        });
+
+        // Password confirmation validation
+        document.querySelector('input[name="confirm_password"]').addEventListener('input', function() {
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = this.value;
+            
+            if (password !== confirmPassword) {
+                this.setCustomValidity('Passwords do not match');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // File upload feedback
+        document.querySelector('input[type="file"]').addEventListener('change', function() {
+            const fileName = this.files[0]?.name || 'No file selected';
+            const btn = document.querySelector('.file-upload-btn');
+            if (this.files[0]) {
+                btn.innerHTML = `<i class="fas fa-check"></i> ${fileName}`;
+                btn.style.borderColor = '#4ecdc4';
+                btn.style.background = 'rgba(78, 205, 196, 0.2)';
+            }
+        });
+
+        // Enhanced input focus animations
+        document.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Parallax effect for stars
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX / window.innerWidth;
+            mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelector('.stars1').style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px)`;
+            document.querySelector('.stars2').style.transform = `translate(${mouseX * 5}px, ${mouseY * 5}px)`;
+            document.querySelector('.stars3').style.transform = `translate(${mouseX * 2}px, ${mouseY * 2}px)`;
+        });
+
+        // Form submission handling
+        document.querySelector('.registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = document.querySelector('.register-btn');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            button.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Registration request submitted successfully! You will receive an email notification within 24-48 hours.');
+                button.innerHTML = '<i class="fas fa-check"></i> Request Submitted';
+                button.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+            }, 2000);
+        });
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
